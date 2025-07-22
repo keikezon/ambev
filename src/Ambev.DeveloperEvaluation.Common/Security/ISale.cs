@@ -15,7 +15,7 @@
         /// Obtém o identificador único do usuário.
         /// </summary>
         /// <returns>O Id de usuário.</returns>
-        public string UserId { get; }
+        public Guid UserId { get; }
 
         /// <summary>
         /// Obtém o valor da venda no sistema.

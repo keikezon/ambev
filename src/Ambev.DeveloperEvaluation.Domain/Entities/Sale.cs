@@ -17,7 +17,7 @@ public class Sale : BaseEntity, ISale
     /// Gets the user's id.
     /// Must not be null or empty.
     /// </summary>
-    public string UserId { get; set; } = string.Empty;
+    public Guid UserId { get; set; }
 
     /// <summary>
     /// Gets the sale's amount.
@@ -67,7 +67,7 @@ public class Sale : BaseEntity, ISale
     /// Gets the unique identifier of the user.
     /// </summary>
     /// <returns>The user's ID as a string.</returns>
-    string ISale.UserId => UserId;
+    Guid ISale.UserId => UserId;
 
     /// <summary>
     /// Gets the sale's amount.
