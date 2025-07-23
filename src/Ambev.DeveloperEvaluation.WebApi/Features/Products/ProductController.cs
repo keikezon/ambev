@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+using Ambev.DeveloperEvaluation.Application.Products.ListProduct;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
@@ -8,6 +9,7 @@ using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
@@ -90,6 +92,31 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             var response = _mapper.Map<GetProductResponse>(result);
 
             return Ok("Product retrieved successfully", response);
+        }
+
+        /// <summary>
+        /// Retrieves a product list
+        /// </summary>
+        /// <param name="request">Thename of the product</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The product details if found</returns>
+        [HttpPost("list")]
+        [ProducesResponseType(typeof(ApiResponseWithData<List<ListProductResponse>?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ListProduct([FromBody] ListProductRequest request, CancellationToken cancellationToken)
+        {
+            var validator = new ListProductRequestValidator();
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var command = _mapper.Map<ListProductCommand>(request);
+            var result = await _mediator.Send(command, cancellationToken);
+            var response = _mapper.Map<List<ListProductResponse>?>(result);
+
+            return Ok("Products retrieved successfully", response);
         }
 
         /// <summary>

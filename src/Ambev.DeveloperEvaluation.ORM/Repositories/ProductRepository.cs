@@ -45,6 +45,16 @@ public class ProductRepository : IProductRepository
     }
 
     /// <summary>
+    /// Retrieves a product list
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The product list, null otherwise</returns>
+    public async Task<List<Product>?> ListAsync(string name, CancellationToken cancellationToken = default)
+    {
+        return await _context.Products.Where(w => name.Contains(name)).ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
     /// Deletes a product from the database
     /// </summary>
     /// <param name="id">The unique identifier of the product to delete</param>
