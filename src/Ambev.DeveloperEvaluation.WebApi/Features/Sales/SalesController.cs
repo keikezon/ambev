@@ -9,6 +9,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSales;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
@@ -17,8 +18,9 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
     /// Controller for managing sales operations
     /// </summary>
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
-    public class SaleController : BaseController
+    public class SalesController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
@@ -28,7 +30,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         /// </summary>
         /// <param name="mediator">The mediator instance</param>
         /// <param name="mapper">The AutoMapper instance</param>
-        public SaleController(IMediator mediator, IMapper mapper)
+        public SalesController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
@@ -116,7 +118,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
             return Ok(new ApiResponse
             {
                 Success = true,
-                Message = "Sale cancelled successfully"
+                Message = "Sale deleted successfully"
             });
         }
 

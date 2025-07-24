@@ -50,7 +50,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
             var product = await _productRepository.GetByIdAsync(item.ProductId, cancellationToken);
             if(product == null)
                 throw new DomainException($"Product with ID {item.ProductId} not found.");
-            item.Amount = CalculateTotalPrice(item.Quantity, product.Price);
+           CalculateTotalPrice(item, product.Price);
         }
         sale.Amount = sale.SaleItems.Sum(item => item.Amount);
 
@@ -59,27 +59,28 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         return result;
     }
 
-    public decimal CalculateTotalPrice(int quantity, decimal unitPrice)
+    public void CalculateTotalPrice(SaleItem saleItem, decimal unitPrice)
     {
-        if (quantity > 20)
+        if (saleItem.Quantity > 20)
         {
             throw new DomainException("Cannot purchase more than 20 identical items.");
         }
 
         decimal discountPercentage = 0;
 
-        if (quantity >= 10 && quantity <= 20)
+        if (saleItem.Quantity >= 10 && saleItem.Quantity <= 20)
         {
             discountPercentage = 0.20m; // 20% discount
         }
-        else if (quantity >= 4 && quantity < 10)
+        else if (saleItem.Quantity >= 4 && saleItem.Quantity < 10)
         {
             discountPercentage = 0.10m; // 10% discount
         }
 
-        decimal totalPrice = quantity * unitPrice;
+        decimal totalPrice = saleItem.Quantity * unitPrice;
         decimal discountAmount = totalPrice * discountPercentage;
 
-        return totalPrice - discountAmount;
+        saleItem.Discount = discountAmount;
+        saleItem.Amount = totalPrice - discountAmount;
     }
 }
