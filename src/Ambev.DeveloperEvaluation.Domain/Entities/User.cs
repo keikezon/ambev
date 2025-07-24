@@ -61,6 +61,11 @@ public class User : BaseEntity, IUser
     public DateTime? UpdatedAt { get; set; }
 
     /// <summary>
+    /// Gets the list of sale.
+    /// </summary>
+    public virtual ICollection<Sale>? Sales { get; set; }
+
+    /// <summary>
     /// Gets the unique identifier of the user.
     /// </summary>
     /// <returns>The user's ID as a string.</returns>
