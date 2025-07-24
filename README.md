@@ -90,6 +90,12 @@ Once the application is running (locally or via Docker), you can explore and tes
 
 Swagger provides a visual interface to interact with the API, including request/response schemas and execution testing.
 
+## Postman UI
+
+If you prefer, you can use Postman instead of Swagger to test the API endpoints. The link to the Postman environment is available below:
+
+[Postman link](https://keikezon-83ffa04a-2322996.postman.co/workspace/Keith-Kellen-Zonatto's-Workspac~07fbb38a-06e3-45c1-87f8-9bbf503600a8/collection/46976826-c49d449c-bb6e-4881-b01b-e3f83b3e69c1?action=share&creator=46976826&active-environment=46976826-7393cfd7-fd81-4a7a-b689-978a9891a0c1)
+
 ## 🧪 Running Tests
 
 To run all tests:
