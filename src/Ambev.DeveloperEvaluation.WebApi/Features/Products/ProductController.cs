@@ -2,11 +2,13 @@
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 using Ambev.DeveloperEvaluation.Application.Products.ListProduct;
+using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +20,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : BaseController
+    public class ProductsController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
@@ -28,7 +30,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
         /// </summary>
         /// <param name="mediator">The mediator instance</param>
         /// <param name="mapper">The AutoMapper instance</param>
-        public ProductController(IMediator mediator, IMapper mapper)
+        public ProductsController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
@@ -60,6 +62,35 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
                 Message = "Product created successfully",
                 Data = _mapper.Map<CreateProductResponse>(response)
             });
+        }
+
+        /// <summary>
+        /// Updates an existing product
+        /// </summary>
+        /// <param name="request">The product update request</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The updated product details</returns>
+        [HttpPut]
+        [ProducesResponseType(typeof(ApiResponseWithData<UpdateProductResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
+        {
+            var validator = new UpdateProductRequestValidator();
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var command = _mapper.Map<UpdateProductCommand>(request);
+            var result = await _mediator.Send(command, cancellationToken);
+
+            if (result == null)
+                return NotFound("Product not found");
+
+            var response = _mapper.Map<UpdateProductResponse>(result);
+
+            return Ok("Product updated successfully", response);
         }
 
         /// <summary>
