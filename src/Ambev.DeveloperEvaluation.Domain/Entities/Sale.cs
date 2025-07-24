@@ -55,7 +55,7 @@ public class Sale : BaseEntity, ISale
     /// <summary>
     /// Gets the user information.
     /// </summary>
-    public virtual User User { get; set; } = new User();
+    public virtual User? User { get; set; }
 
     /// <summary>
     /// Gets the unique identifier of the sale.
@@ -121,11 +121,11 @@ public class Sale : BaseEntity, ISale
 
     /// <summary>
     /// Processing the user sale.
-    /// Changes the sale's status to Processing.
+    /// Changes the sale's status to NotCancelled.
     /// </summary>
-    public void Processing()
+    public void NotCancelled()
     {
-        Status = SaleStatus.Processing;
+        Status = SaleStatus.NotCancelled;
         UpdatedAt = DateTime.UtcNow;
     }
 

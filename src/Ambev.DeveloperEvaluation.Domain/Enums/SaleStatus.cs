@@ -3,6 +3,6 @@
 public enum SaleStatus
 {
     Unknown = 0,
-    Processing,
+    NotCancelled,
     Cancelled,
 }

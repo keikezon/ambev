@@ -18,7 +18,6 @@ public sealed class AuthenticateUserProfile : Profile
     {
         CreateMap<AuthenticateUserRequest, AuthenticateUserCommand>();
         CreateMap<AuthenticateUserResult, AuthenticateUserResponse>()
-            .ForMember(dest => dest.Token, opt => opt.Ignore())
             .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()));
     }
 }

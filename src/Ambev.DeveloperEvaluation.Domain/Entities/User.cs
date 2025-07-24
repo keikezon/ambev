@@ -63,7 +63,7 @@ public class User : BaseEntity, IUser
     /// <summary>
     /// Gets the list of sale.
     /// </summary>
-    public virtual ICollection<Sale> Sales { get; set; }
+    public virtual ICollection<Sale>? Sales { get; set; }
 
     /// <summary>
     /// Gets the unique identifier of the user.

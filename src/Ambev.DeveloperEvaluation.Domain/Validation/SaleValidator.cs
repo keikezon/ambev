@@ -14,9 +14,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Validation
         public SaleValidator()
         {
 
-            RuleFor(sale => sale.Status)
-                .NotEqual(SaleStatus.Unknown)
-                .WithMessage("User status cannot be Unknown.");
+            RuleFor(sale => sale.Branch).NotEmpty().Length(3, 50);
         }
     }
 }

@@ -56,12 +56,12 @@ public class SaleItem : BaseEntity, ISaleItem
     /// <summary>
     /// Gets the sale's information.
     /// </summary>
-    public virtual Sale Sale { get; set; } = new Sale();
+    public virtual Sale? Sale { get; set; }
 
     /// <summary>
     /// Gets the product's information.
     /// </summary>
-    public virtual Product Product { get; set; } = new Product();
+    public virtual Product? Product { get; set; }
 
     /// <summary>
     /// Gets the unique identifier of the saleItem.

@@ -51,7 +51,9 @@ public class ProductRepository : IProductRepository
     /// <returns>The product list, null otherwise</returns>
     public async Task<List<Product>?> ListAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await _context.Products.Where(w => name.Contains(name)).ToListAsync(cancellationToken);
+        return await _context.Products
+            .Where(w => string.IsNullOrEmpty(name) || w.Name.Contains(name))
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
